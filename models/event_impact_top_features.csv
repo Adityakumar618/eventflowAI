@@ -1,0 +1,16 @@
+feature,importance_dur,importance_closure,importance_impact
+cause_x_dist,2986,58,2017
+cause_median_dur,526,108,1973
+min_dist_major_junc,2533,97,1807
+text_svd_2,2182,83,1791
+latitude,2257,86,1657
+dist_to_kr_puram,2503,135,1622
+dist_to_hebbal,2225,102,1622
+text_svd_3,1991,85,1589
+dist_to_mekhri,2116,50,1517
+text_svd_6,2490,142,1459
+longitude,2260,119,1342
+text_svd_5,2405,92,1306
+corridor_centrality,734,51,1267
+dist_to_silk_board,1852,60,1265
+text_svd_0,2458,100,1173

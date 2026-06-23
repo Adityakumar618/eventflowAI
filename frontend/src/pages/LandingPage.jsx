@@ -32,8 +32,8 @@ function CommandPreview({ theme }) {
             <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${theme.faint}`}>Command Center</p>
             <p className={`mt-1 text-sm font-semibold ${theme.text}`}>BTP Bengaluru · Live</p>
           </div>
-          <div className="rounded-full border border-[#D69A2D]/25 bg-[#D69A2D]/10 px-3 py-1 text-xs font-semibold text-[#D69A2D]">
-            GridGuard V9
+          <div className="rounded-full border border-[#4CAF82]/25 bg-[#4CAF82]/10 px-3 py-1 text-xs font-semibold text-[#4CAF82]">
+            Live
           </div>
         </div>
 
@@ -64,40 +64,14 @@ function CommandPreview({ theme }) {
             ))}
           </div>
 
-          <div className={`relative min-h-[310px] overflow-hidden rounded-2xl border ${theme.border} bg-[#11100E] p-5`}>
-            <svg className="absolute inset-0 h-full w-full" viewBox="0 0 420 320" aria-hidden="true">
-              {[
-                ['210,82', '106,150'], ['210,82', '306,146'], ['106,150', '166,236'],
-                ['306,146', '248,238'], ['166,236', '248,238'], ['210,82', '210,170'],
-              ].map(([a, b]) => {
-                const [x1, y1] = a.split(',')
-                const [x2, y2] = b.split(',')
-                return <line key={`${a}-${b}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(214,154,45,.28)" strokeWidth="1.2" />
-              })}
-            </svg>
-            {[
-              { label: 'STIS 8.2', x: '47%', y: '20%' },
-              { label: '4.2h', x: '20%', y: '43%' },
-              { label: 'Zone E', x: '73%', y: '42%' },
-              { label: 'Triage', x: '34%', y: '72%' },
-              { label: 'Deploy', x: '59%', y: '73%' },
-            ].map((node, index) => (
-              <motion.div
-                key={node.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.55 + index * 0.12 }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#D69A2D]/35 bg-[#1A1815] px-3 py-2 text-xs font-semibold text-[#F4EBDD] shadow-[0_0_0_6px_rgba(214,154,45,0.06)]"
-                style={{ left: node.x, top: node.y }}
-              >
-                {node.label}
-              </motion.div>
-            ))}
-            <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-[#F4EBDD]/10 bg-[#1A1815]/92 p-4">
+          <div className={`flex min-h-[310px] flex-col justify-center rounded-2xl border ${theme.border} bg-[#1A1815] p-5`}>
+            <div className="rounded-2xl border border-[#D69A2D]/30 bg-[#16130E] p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D69A2D]">Triage alert</p>
-              <p className="mt-2 text-sm text-[#F4EBDD]">3 concurrent events in Central zone — 14 officers available</p>
-              <div className="mt-3 flex items-center gap-2 text-xs text-[#A69E92]">
-                <CheckCircle2 size={14} className="text-[#D69A2D]" />
+              <p className="mt-3 text-base font-medium leading-relaxed text-[#F4EBDD]">
+                3 concurrent events in Central zone — 14 officers available
+              </p>
+              <div className="mt-4 flex items-center gap-2 text-sm text-[#C8BFB0]">
+                <CheckCircle2 size={15} className="shrink-0 text-[#D69A2D]" />
                 Survival + STIS intelligence ready
               </div>
             </div>
@@ -190,7 +164,7 @@ export default function LandingPage({ setView, isLightMode, setIsLightMode }) {
             </div>
             <div className={`mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm ${theme.faint}`}>
               <span className="flex items-center gap-2"><Shield size={15} className="text-[#D69A2D]" /> ASTraM Data</span>
-              <span className="flex items-center gap-2"><Zap size={15} className="text-[#D69A2D]" /> GridGuard Inference</span>
+              <span className="flex items-center gap-2"><Zap size={15} className="text-[#D69A2D]" /> ML Inference</span>
               <span className="flex items-center gap-2"><MapPin size={15} className="text-[#D69A2D]" /> Real-time Triage</span>
             </div>
           </FadeReveal>

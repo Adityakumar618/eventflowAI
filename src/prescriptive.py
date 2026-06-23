@@ -732,6 +732,254 @@ class WhatIfSimulator:
         return {"score": round(score, 3), "label": label}
 
 
+def _humanize_cause(cause: str) -> str:
+    return str(cause).replace("_", " ").strip().title()
+
+
+def _humanize_place(label: Optional[str], fallback: str = "the nearest junction") -> str:
+    if not label:
+        return fallback
+    cleaned = str(label).strip()
+    if cleaned.lower() in ("non-corridor", "unknown", "none", ""):
+        return fallback
+    if cleaned.islower() or cleaned.isupper():
+        return cleaned.title()
+    return cleaned
+
+
+def _hour_context(hour: int) -> str:
+    if 7 <= hour <= 10:
+        return "morning peak (7–10 AM)"
+    if 17 <= hour <= 20:
+        return "evening rush (5–8 PM)"
+    if 11 <= hour <= 16:
+        return "midday traffic"
+    if 21 <= hour <= 23 or 0 <= hour <= 6:
+        return "off-peak hours"
+    return f"hour {hour}:00"
+
+
+def _improvement_phrase(pct: float) -> str:
+    if pct >= 85:
+        return "a major drop in gridlock — most through-traffic should flow once diversions are live"
+    if pct >= 70:
+        return "roughly two-thirds less gridlock"
+    if pct >= 50:
+        return "about half the congestion impact"
+    if pct >= 30:
+        return "a noticeable reduction in delays"
+    if pct >= 15:
+        return "a modest but worthwhile improvement"
+    return "a small reduction in local delays"
+
+
+def _confidence_explanation(label: str, pct: int) -> str:
+    explanations = {
+        "HIGH": "Model and corridor data align well — treat this as a reliable starting plan.",
+        "MEDIUM": "Reasonable estimate, but verify officer availability and on-ground conditions.",
+        "LOW": "Limited data for this corridor — use as guidance and adjust once units arrive.",
+    }
+    base = explanations.get(label, explanations["MEDIUM"])
+    return f"{label.title()} confidence ({pct}%): {base}"
+
+
+def _build_display_summary(
+    ev: Dict[str, Any],
+    ev_alloc: Dict[str, Any],
+    bd: Dict[str, Any],
+    wif: Dict[str, Any],
+    mp_triage: bool,
+) -> Dict[str, Any]:
+    """Plain-English summary for the command-center UI."""
+    cause = _humanize_cause(ev["event_cause"])
+    corridor = ev["corridor"]
+    zone = ev["zone"]
+    p50 = ev["p50_hours"]
+    p35 = ev.get("p35_hours", p50 * 0.65)
+    p65 = ev.get("p65_hours", p50 * 1.45)
+    overlap = ev.get("active_overlap", 0)
+    hour_ctx = _hour_context(int(ev.get("hour", 12)))
+
+    officers = int(ev_alloc.get("officers_assigned", 0))
+    min_need = int(ev_alloc.get("min_needed", 0))
+    station = _humanize_place(
+        ev_alloc.get("nearest_station") or ev.get("police_station"),
+        "the nearest BTP station",
+    )
+    status_raw = str(ev_alloc.get("status", "PENDING"))
+    status = status_raw.replace("_", " ").replace(" - ", " — ").title()
+    coverage = _safe_float(ev_alloc.get("coverage_ratio"), 0)
+
+    barricade = bd.get("barricade_level", "MINIMAL")
+    points = bd.get("barricade_points") or []
+    upstream = bd.get("upstream_control_points") or []
+    diversions = bd.get("diversion_routes") or []
+
+    point_labels = [_humanize_place(p.get("label"), corridor) for p in points[:3]]
+    imp_pct = _safe_float(wif.get("improvement_pct"), 0)
+    decomp = wif.get("decomposition") or {}
+    conf = wif.get("confidence") or {}
+    conf_pct = round(_safe_float(conf.get("score"), 0.6) * 100)
+    conf_label = conf.get("label", "MEDIUM")
+
+    clearance_band = (
+        f"about {p50:.1f} hours to clear (typical range {p35:.1f}–{p65:.1f} h)"
+        if p50 >= 0.5
+        else f"likely under {max(p50, 0.3):.1f} hour to clear"
+    )
+
+    if coverage >= 1.0:
+        mp_msg = (
+            f"Assign {officers} officers from {station} to manage this {cause.lower()} on {corridor} "
+            f"in the {zone} zone. That meets the minimum of {min_need} officers needed for safe traffic control."
+        )
+    elif officers > 0:
+        shortfall = max(0, min_need - officers)
+        mp_msg = (
+            f"You have only {officers} of {min_need} officers needed from {station} "
+            f"({shortfall} short). Call for backup from a neighbouring zone before traffic backs up on {corridor}."
+        )
+    else:
+        mp_msg = (
+            f"No officers are assigned yet — dispatch at least {min_need} from {station} "
+            f"to secure {corridor} before congestion spreads."
+        )
+    if mp_triage:
+        mp_msg += (
+            f" Triage mode is on: {overlap} other incident(s) within 2 km are sharing the same officer pool."
+        )
+
+    primary_point = point_labels[0] if point_labels else corridor
+    barricade_text = {
+        "FULL": (
+            f"Shut the road completely at {primary_point}. "
+            "No through-traffic until the scene is cleared and debris is removed."
+        ),
+        "PARTIAL": (
+            f"Block one carriageway at {primary_point}, "
+            "but keep one lane open for ambulances, buses, and emergency vehicles."
+        ),
+        "MINIMAL": (
+            f"Use cones and warning boards at {corridor} only — "
+            "let traffic pass slowly in single file past the incident."
+        ),
+    }
+    bar_msg = barricade_text.get(barricade, barricade_text["PARTIAL"])
+
+    if diversions:
+        best = max(diversions, key=lambda d: _safe_float(d.get("est_time_savings_mins"), 0))
+        waypoints = [_humanize_place(w, "") for w in (best.get("waypoints") or []) if w]
+        route_str = " → ".join(waypoints[:4]) if waypoints else _humanize_place(best.get("target"), "a parallel arterial")
+        savings = _safe_float(best.get("est_time_savings_mins"), 0)
+        travel = best.get("est_travel_mins")
+        if savings >= 5:
+            div_msg = (
+                f"Direct commuters away from {corridor} onto: {route_str}. "
+                f"This alternate path saves about {savings:.0f} minutes compared with waiting in the jam."
+            )
+        elif travel and travel < 90:
+            div_msg = (
+                f"Post signs directing traffic via {route_str}. "
+                f"Expect roughly {travel:.0f} minutes on this route during {hour_ctx}."
+            )
+        else:
+            div_msg = (
+                f"Use {route_str} as a bypass while {corridor} stays blocked. "
+                f"It may be longer than usual, but it avoids the incident zone entirely."
+            )
+    else:
+        div_msg = (
+            f"No pre-mapped diversion for this spot — send units to guide drivers "
+            f"onto parallel roads near {corridor}."
+        )
+
+    imp_phrase = _improvement_phrase(imp_pct)
+    top_driver = max(
+        [
+            ("officer deployment", decomp.get("manpower_reduction_pct", 0)),
+            ("barricades", decomp.get("barricade_reduction_pct", 0)),
+            ("traffic diversions", decomp.get("diversion_reduction_pct", 0)),
+        ],
+        key=lambda x: x[1],
+    )[0]
+    wi_msg = (
+        f"Following this plan should mean {imp_phrase} on {corridor} "
+        f"(~{imp_pct:.0f}% less congestion than doing nothing). "
+        f"The biggest benefit comes from {top_driver}."
+    )
+
+    barricade_word = {"FULL": "full road closure", "PARTIAL": "partial lane closure", "MINIMAL": "light cones only"}.get(
+        barricade, barricade.lower()
+    )
+    headline = (
+        f"{cause} on {corridor}: send {officers} officers, set up {barricade_word}, "
+        f"{clearance_band}."
+    )
+
+    action_items = []
+    if officers > 0:
+        action_items.append(f"Dispatch {officers} officers from {station} — {status}")
+    else:
+        action_items.append(f"Request {min_need} officers from {station}")
+    if points:
+        primary = points[0]
+        place = _humanize_place(primary.get("label"), corridor)
+        reason = primary.get("reason", "")
+        if "origin" in reason.lower():
+            reason_plain = "this is where the incident started"
+        elif "betweenness" in reason.lower():
+            reason_plain = "this junction feeds most traffic into the corridor"
+        elif reason:
+            reason_plain = reason[0].lower() + reason[1:] if reason else ""
+        else:
+            reason_plain = ""
+        action_items.append(
+            f"Erect {barricade.lower()} barricade at {place}"
+            + (f" ({reason_plain})" if reason_plain else "")
+        )
+    for pt in upstream[:2]:
+        label = _humanize_place(pt.get("label"))
+        if label != "the nearest junction":
+            action_items.append(f"Put diversion signs at {label} (upstream of the block)")
+    if diversions:
+        wp = [_humanize_place(w, "") for w in (diversions[0].get("waypoints") or []) if w]
+        if wp:
+            action_items.append(f"Announce on radio/social: use {' → '.join(wp[:3])}")
+
+    cascade_causes = [_humanize_cause(c) for c in (bd.get("cascade_watch") or [])]
+    cascade = []
+    if cascade_causes:
+        if len(cascade_causes) == 1:
+            joined = cascade_causes[0].lower()
+        elif len(cascade_causes) == 2:
+            joined = f"{cascade_causes[0].lower()} and {cascade_causes[1].lower()}"
+        else:
+            joined = ", ".join(c.lower() for c in cascade_causes[:-1]) + f" and {cascade_causes[-1].lower()}"
+        cascade.append(
+            f"After this {cause.lower()}, watch for secondary {joined} within 2 km — "
+            "these often follow the first incident during peak traffic."
+        )
+
+    return {
+        "headline": headline,
+        "manpower_message": mp_msg,
+        "barricade_message": bar_msg,
+        "diversion_message": div_msg,
+        "what_if_message": wi_msg,
+        "action_items": action_items,
+        "cascade_watch_messages": cascade,
+        "confidence_label": conf_label,
+        "confidence_pct": conf_pct,
+        "confidence_message": _confidence_explanation(conf_label, conf_pct),
+        "predicted_clearance_hrs": round(p50, 1),
+        "officers_recommended": officers,
+        "barricade_level": barricade,
+        "improvement_pct": round(imp_pct, 1),
+        "event_cause_label": cause,
+        "time_context": hour_ctx,
+    }
+
+
 class PrescriptiveEngine:
     """
     Main entry point for Phase 3 recommendations.
@@ -796,8 +1044,12 @@ class PrescriptiveEngine:
             f"What-if: {wif['improvement_pct']:.1f}% delay reduction expected (confidence {wif['confidence']['label']})."
         )
 
+        bd_with_cascade = {**bd, "cascade_watch": self._cascade_watch(ev_norm)}
+        display = _build_display_summary(ev_norm, ev_alloc, bd_with_cascade, wif, mp.triage_active)
+
         return {
             "event_id": ev_norm["event_id"],
+            "display_summary": display,
             "recommendations": {
                 "manpower": {
                     "officers_recommended": ev_alloc.get("officers_assigned", 0),
@@ -812,7 +1064,7 @@ class PrescriptiveEngine:
                     "upstream_points": bd["upstream_control_points"],
                 },
                 "diversions": bd["diversion_routes"],
-                "cascade_watch": self._cascade_watch(ev_norm),
+                "cascade_watch": bd_with_cascade.get("cascade_watch"),
             },
             "manpower_allocation": {
                 "solver": mp.solver,

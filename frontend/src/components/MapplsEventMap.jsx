@@ -16,12 +16,43 @@ const HOTSPOTS = [
 
 const RISK_COLORS = { HIGH: '#E07A5F', MEDIUM: '#D69A2D', LOW: '#4CAF82' }
 
+const EVENT_PIN_ICON = 'https://apis.mappls.com/map_v3/2.png'
+
+function buildEventPopupHtml(lat, lon, cause) {
+  const label = (cause || 'event').replace(/_/g, ' ')
+  return `<div style="background:#FFFFFF;color:#16130E;font-family:Inter,system-ui,sans-serif;padding:10px 14px;border-radius:8px;min-width:160px;line-height:1.45;box-shadow:0 2px 10px rgba(0,0,0,0.18)"><div style="color:#B45309;font-weight:700;font-size:13px;margin-bottom:4px">New Event</div><div style="color:#16130E;font-size:12px;margin-bottom:4px">${label}</div><div style="color:#5C564C;font-size:11px">${lat.toFixed(4)}, ${lon.toFixed(4)}</div></div>`
+}
+
+function buildHotspotPopupHtml(name, risk) {
+  return `<div style="background:#FFFFFF;color:#16130E;font-family:Inter,system-ui,sans-serif;padding:8px 12px;border-radius:8px;min-width:120px;line-height:1.4"><div style="color:#16130E;font-weight:700;font-size:12px">${name}</div><div style="color:${RISK_COLORS[risk]};font-size:11px;font-weight:600;margin-top:2px">${risk} RISK</div></div>`
+}
+
+function applyMarkerPopup(marker, html, openPopup = false) {
+  if (!marker) return
+  try {
+    if (typeof marker.setPopup === 'function') {
+      marker.setPopup(html, { openPopup })
+      return
+    }
+  } catch (_) {}
+  try {
+    marker.popupHtml = html
+    if (openPopup) {
+      if (typeof marker.openPopup === 'function') marker.openPopup()
+      else if (typeof marker.showPopup === 'function') marker.showPopup()
+    }
+  } catch (_) {}
+}
+
 function extractLatLng(event) {
   if (!event) return null
   if (event.latLng) return { lat: event.latLng.lat, lon: event.latLng.lng }
   if (event.lngLat) return { lat: event.lngLat.lat, lon: event.lngLat.lng }
   if (typeof event.lat === 'number' && typeof event.lng === 'number') {
     return { lat: event.lat, lon: event.lng }
+  }
+  if (typeof event.lat === 'number' && typeof event.lon === 'number') {
+    return { lat: event.lat, lon: event.lon }
   }
   return null
 }
@@ -41,7 +72,9 @@ export default function MapplsEventMap({
   const markerRef = useRef(null)
   const hotspotMarkersRef = useRef([])
   const onLocationChangeRef = useRef(onLocationChange)
+  const eventCauseRef = useRef(eventCause)
   const mapReadyRef = useRef(false)
+  const latLonRef = useRef({ lat, lon })
 
   const [status, setStatus] = useState('loading')
   const [errorMsg, setErrorMsg] = useState('')
@@ -53,8 +86,60 @@ export default function MapplsEventMap({
   }, [onLocationChange])
 
   useEffect(() => {
+    eventCauseRef.current = eventCause
+  }, [eventCause])
+
+  useEffect(() => {
+    latLonRef.current = { lat, lon }
+  }, [lat, lon])
+
+  useEffect(() => {
     let cancelled = false
     let resizeObserver = null
+
+    const bindDragEnd = (marker) => {
+      if (!onLocationChangeRef.current) return
+      marker.addListener?.('dragend', () => {
+        const pos = marker?.getPosition?.()
+        if (!pos) return
+        const next = extractLatLng(pos) || { lat: pos.lat, lon: pos.lng }
+        onLocationChangeRef.current?.(next.lat, next.lon)
+        const html = buildEventPopupHtml(next.lat, next.lon, eventCauseRef.current)
+        applyMarkerPopup(marker, html, true)
+      })
+    }
+
+    const upsertEventMarker = (mappls, map, nextLat, nextLon, openPopup = false) => {
+      const html = buildEventPopupHtml(nextLat, nextLon, eventCauseRef.current)
+
+      if (markerRef.current) {
+        try {
+          markerRef.current.setPosition?.({ lat: nextLat, lng: nextLon })
+          markerRef.current.setIcon?.(EVENT_PIN_ICON)
+          applyMarkerPopup(markerRef.current, html, openPopup)
+          return
+        } catch (_) {
+          try { markerRef.current.remove?.() } catch (_) {}
+          markerRef.current = null
+        }
+      }
+
+      try {
+        markerRef.current = new mappls.Marker({
+          map,
+          position: { lat: nextLat, lng: nextLon },
+          icon: EVENT_PIN_ICON,
+          draggable: Boolean(onLocationChangeRef.current),
+          popupHtml: html,
+          popupOptions: { openPopup },
+          width: 34,
+          height: 34,
+          offset: [0, -14],
+        })
+        bindDragEnd(markerRef.current)
+        applyMarkerPopup(markerRef.current, html, openPopup)
+      } catch (_) {}
+    }
 
     const init = async () => {
       setStatus('loading')
@@ -85,7 +170,8 @@ export default function MapplsEventMap({
               const marker = new mappls.Marker({
                 map,
                 position: { lat: h.lat, lng: h.lon },
-                popupHtml: `<div style="font-family:Inter,sans-serif;padding:8px 10px"><b>${h.name}</b><br><span style="color:${RISK_COLORS[h.risk]}">${h.risk} RISK</span></div>`,
+                icon: 'https://apis.mappls.com/map_v3/1.png',
+                popupHtml: buildHotspotPopupHtml(h.name, h.risk),
                 width: 22,
                 height: 22,
                 offset: [0, -8],
@@ -95,36 +181,13 @@ export default function MapplsEventMap({
           })
         }
 
-        const upsertEventMarker = (nextLat, nextLon) => {
-          try {
-            if (markerRef.current) markerRef.current.remove?.()
-            markerRef.current = new mappls.Marker({
-              map,
-              position: { lat: nextLat, lng: nextLon },
-              draggable: Boolean(onLocationChangeRef.current),
-              popupHtml: `<div style="font-family:Inter,sans-serif;padding:8px 10px"><b>New Event</b><br>${(eventCause || 'event').replace(/_/g, ' ')}<br><small>${nextLat.toFixed(4)}, ${nextLon.toFixed(4)}</small></div>`,
-              width: 34,
-              height: 34,
-              offset: [0, -14],
-            })
-
-            if (onLocationChangeRef.current) {
-              markerRef.current.addListener?.('dragend', () => {
-                const pos = markerRef.current?.getPosition?.()
-                if (!pos) return
-                const next = extractLatLng(pos) || { lat: pos.lat, lon: pos.lng }
-                onLocationChangeRef.current?.(next.lat, next.lon)
-              })
-            }
-          } catch (_) {}
-        }
-
         const ready = () => {
           if (cancelled || mapReadyRef.current) return
           mapReadyRef.current = true
           placeHotspots()
-          upsertEventMarker(lat, lon)
-          map.setCenter?.({ lat, lng: lon })
+          const { lat: initLat, lon: initLon } = latLonRef.current
+          upsertEventMarker(mappls, map, initLat, initLon, false)
+          map.setCenter?.({ lat: initLat, lng: initLon })
           const overlayOk = setMapTrafficOverlay(map, true)
           setMapTrafficClosures(map, true)
           setTrafficSupported(overlayOk)
@@ -155,7 +218,7 @@ export default function MapplsEventMap({
           const next = extractLatLng(evt)
           if (!next) return
           onLocationChangeRef.current(next.lat, next.lon)
-          upsertEventMarker(next.lat, next.lon)
+          upsertEventMarker(mappls, map, next.lat, next.lon, true)
         })
 
         if (window.ResizeObserver && mapRef.current) {
@@ -189,33 +252,20 @@ export default function MapplsEventMap({
     }
   }, [mapContainerId])
 
+  // Sync marker when lat/lon/cause change from form — update in place, never destroy/recreate
   useEffect(() => {
     const map = mapInstanceRef.current
-    if (!map || status !== 'ready') return
+    if (!map || status !== 'ready' || !markerRef.current) return
 
     try {
-      if (markerRef.current) markerRef.current.remove?.()
-      const mappls = window.mappls
-      markerRef.current = new mappls.Marker({
-        map,
-        position: { lat, lng: lon },
-        draggable: Boolean(onLocationChange),
-        popupHtml: `<div style="font-family:Inter,sans-serif;padding:8px 10px"><b>New Event</b><br>${(eventCause || 'event').replace(/_/g, ' ')}<br><small>${lat.toFixed(4)}, ${lon.toFixed(4)}</small></div>`,
-        width: 34,
-        height: 34,
-        offset: [0, -14],
-      })
-      if (onLocationChange) {
-        markerRef.current.addListener?.('dragend', () => {
-          const pos = markerRef.current?.getPosition?.()
-          if (!pos) return
-          const next = extractLatLng(pos) || { lat: pos.lat, lon: pos.lng }
-          onLocationChange(next.lat, next.lon)
-        })
-      }
-      map.setCenter?.({ lat, lng: lon })
+      markerRef.current.setPosition?.({ lat, lng: lon })
+      applyMarkerPopup(
+        markerRef.current,
+        buildEventPopupHtml(lat, lon, eventCause),
+        true,
+      )
     } catch (_) {}
-  }, [lat, lon, eventCause, onLocationChange, status])
+  }, [lat, lon, eventCause, status])
 
   useEffect(() => {
     const map = mapInstanceRef.current
@@ -234,6 +284,7 @@ export default function MapplsEventMap({
   }
 
   const trafficPanel = showTrafficPanel ? <CorridorTrafficPanel lat={lat} lon={lon} /> : null
+  const causeLabel = (eventCause || 'event').replace(/_/g, ' ')
 
   if (status === 'error') {
     return (
@@ -289,6 +340,22 @@ export default function MapplsEventMap({
         >
           <MapPin size={10} /> Mappls · Bengaluru Live
         </div>
+
+        {onLocationChange && status === 'ready' && (
+          <div
+            className="pointer-events-none absolute top-2 left-1/2 z-20 -translate-x-1/2 rounded-lg px-3 py-2 text-center shadow-lg"
+            style={{
+              background: '#FFFFFF',
+              color: '#16130E',
+              border: '1px solid rgba(214,154,45,0.35)',
+              minWidth: 160,
+            }}
+          >
+            <div className="text-[11px] font-bold" style={{ color: '#B45309' }}>New Event</div>
+            <div className="text-[11px] font-medium capitalize">{causeLabel}</div>
+            <div className="text-[10px]" style={{ color: '#5C564C' }}>{lat.toFixed(4)}, {lon.toFixed(4)}</div>
+          </div>
+        )}
 
         {status === 'ready' && trafficSupported && (
           <button

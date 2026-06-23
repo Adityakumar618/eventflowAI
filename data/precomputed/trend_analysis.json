@@ -1,0 +1,100 @@
+{
+  "frequency_trend": {
+    "slope": -38.14,
+    "pvalue": 0.7846,
+    "direction": "DECREASING",
+    "insight": "Event frequency is decreasing by 38.1 events/month (p=0.785)"
+  },
+  "duration_trend": {
+    "slope": -655.554,
+    "pvalue": 0.0001,
+    "direction": "GETTING FASTER",
+    "insight": "Median resolution time is decreasing by 655.6h/month"
+  },
+  "deteriorating_corridors": [
+    {
+      "corridor": "ORR East 2",
+      "slope": 1.63
+    },
+    {
+      "corridor": "West of Chord Road",
+      "slope": 1.54
+    },
+    {
+      "corridor": "ORR North 2",
+      "slope": 1.06
+    },
+    {
+      "corridor": "ORR West 1",
+      "slope": 0.57
+    },
+    {
+      "corridor": "Magadi Road",
+      "slope": 0.49
+    }
+  ],
+  "improving_corridors": [
+    {
+      "corridor": "Non-corridor",
+      "slope": -12.63
+    },
+    {
+      "corridor": "Bellary Road 2",
+      "slope": -7.29
+    },
+    {
+      "corridor": "Bellary Road 1",
+      "slope": -6.11
+    },
+    {
+      "corridor": "Hosur Road",
+      "slope": -5.83
+    },
+    {
+      "corridor": "Tumkur Road",
+      "slope": -2.29
+    }
+  ],
+  "cause_trends": {
+    "accident": -9.74,
+    "congestion": 3.03,
+    "construction": -10.69,
+    "debris": 0.0,
+    "others": -10.0,
+    "pot_holes": -7.29,
+    "procession": -2.0,
+    "protest": 0.0,
+    "public_event": -2.0,
+    "road_conditions": -2.17,
+    "tree_fall": 23.49,
+    "vehicle_breakdown": -53.2,
+    "vip_movement": 0.0,
+    "water_logging": 31.89
+  },
+  "monthly_summary": {
+    "2023-11": {
+      "count": 984,
+      "median_hrs": 3163.86
+    },
+    "2023-12": {
+      "count": 1774,
+      "median_hrs": 2555.47
+    },
+    "2024-01": {
+      "count": 1468,
+      "median_hrs": 1794.85
+    },
+    "2024-02": {
+      "count": 1361,
+      "median_hrs": 1076.65
+    },
+    "2024-03": {
+      "count": 1958,
+      "median_hrs": 322.88
+    },
+    "2024-04": {
+      "count": 628,
+      "median_hrs": 58.18
+    }
+  }
+}

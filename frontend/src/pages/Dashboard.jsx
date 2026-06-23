@@ -200,12 +200,6 @@ export default function Dashboard({ setView, isLightMode, setIsLightMode }) {
             <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: theme.secondary }}>BTP Command</p>
             <h1 className="text-lg font-semibold">{activeLabel}</h1>
           </div>
-          <span
-            className="rounded-full border px-3 py-1 text-xs font-semibold"
-            style={{ borderColor: `${theme.accent}35`, color: theme.accent, background: `${theme.accent}10` }}
-          >
-            GridGuard V9
-          </span>
         </header>
 
         <div className="min-h-0 flex-1 overflow-y-auto p-5 md:p-6">

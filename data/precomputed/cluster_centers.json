@@ -1,0 +1,464 @@
+{
+  "0": {
+    "lat": 12.99042,
+    "lon": 77.58173,
+    "n_events": 6501,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "1": {
+    "lat": 12.9464,
+    "lon": 77.69086,
+    "n_events": 497,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "ORR East 1"
+  },
+  "2": {
+    "lat": 12.96736,
+    "lon": 77.66058,
+    "n_events": 11,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "3": {
+    "lat": 13.01089,
+    "lon": 77.61515,
+    "n_events": 8,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "4": {
+    "lat": 12.9875,
+    "lon": 77.73499,
+    "n_events": 19,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "5": {
+    "lat": 13.26592,
+    "lon": 77.71906,
+    "n_events": 6,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "6": {
+    "lat": 12.97247,
+    "lon": 77.75004,
+    "n_events": 61,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "7": {
+    "lat": 12.94543,
+    "lon": 77.49556,
+    "n_events": 8,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "8": {
+    "lat": 12.94298,
+    "lon": 77.62211,
+    "n_events": 10,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "9": {
+    "lat": 12.8455,
+    "lon": 77.67255,
+    "n_events": 42,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "10": {
+    "lat": 12.93924,
+    "lon": 77.55855,
+    "n_events": 8,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "11": {
+    "lat": 12.9697,
+    "lon": 77.73275,
+    "n_events": 5,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "12": {
+    "lat": 13.02241,
+    "lon": 77.60206,
+    "n_events": 11,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "13": {
+    "lat": 13.12134,
+    "lon": 77.61839,
+    "n_events": 8,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "14": {
+    "lat": 13.0455,
+    "lon": 77.64376,
+    "n_events": 67,
+    "top_cause": "construction",
+    "corridor": "Non-corridor"
+  },
+  "15": {
+    "lat": 12.87442,
+    "lon": 77.62499,
+    "n_events": 17,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "16": {
+    "lat": 12.90671,
+    "lon": 77.54821,
+    "n_events": 39,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "17": {
+    "lat": 12.99426,
+    "lon": 77.717,
+    "n_events": 17,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "18": {
+    "lat": 12.95239,
+    "lon": 77.62136,
+    "n_events": 13,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "19": {
+    "lat": 13.08279,
+    "lon": 77.54969,
+    "n_events": 13,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "20": {
+    "lat": 12.81999,
+    "lon": 77.68787,
+    "n_events": 15,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "21": {
+    "lat": 12.9209,
+    "lon": 77.73648,
+    "n_events": 6,
+    "top_cause": "others",
+    "corridor": "Non-corridor"
+  },
+  "22": {
+    "lat": 12.87651,
+    "lon": 77.67052,
+    "n_events": 5,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "23": {
+    "lat": 12.94073,
+    "lon": 77.74707,
+    "n_events": 72,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "24": {
+    "lat": 12.96196,
+    "lon": 77.53433,
+    "n_events": 13,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "West of Chord Road"
+  },
+  "25": {
+    "lat": 13.00072,
+    "lon": 77.75746,
+    "n_events": 28,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "26": {
+    "lat": 12.84072,
+    "lon": 77.65001,
+    "n_events": 10,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "27": {
+    "lat": 12.88288,
+    "lon": 77.75402,
+    "n_events": 19,
+    "top_cause": "accident",
+    "corridor": "Non-corridor"
+  },
+  "28": {
+    "lat": 12.90768,
+    "lon": 77.69391,
+    "n_events": 6,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "29": {
+    "lat": 13.03799,
+    "lon": 77.73871,
+    "n_events": 9,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "30": {
+    "lat": 13.17932,
+    "lon": 77.63783,
+    "n_events": 13,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Bellary Road 2"
+  },
+  "31": {
+    "lat": 12.93849,
+    "lon": 77.63474,
+    "n_events": 12,
+    "top_cause": "water_logging",
+    "corridor": "IRR(Thanisandra road)"
+  },
+  "32": {
+    "lat": 13.2573,
+    "lon": 77.71259,
+    "n_events": 7,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "33": {
+    "lat": 12.89005,
+    "lon": 77.56401,
+    "n_events": 11,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "34": {
+    "lat": 13.19069,
+    "lon": 77.64576,
+    "n_events": 10,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Bellary Road 2"
+  },
+  "35": {
+    "lat": 13.01098,
+    "lon": 77.50654,
+    "n_events": 8,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "36": {
+    "lat": 12.8817,
+    "lon": 77.54496,
+    "n_events": 7,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "37": {
+    "lat": 12.90386,
+    "lon": 77.47031,
+    "n_events": 13,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Mysore Road"
+  },
+  "38": {
+    "lat": 13.06818,
+    "lon": 77.65128,
+    "n_events": 12,
+    "top_cause": "construction",
+    "corridor": "Non-corridor"
+  },
+  "39": {
+    "lat": 13.06267,
+    "lon": 77.50556,
+    "n_events": 5,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "40": {
+    "lat": 13.11404,
+    "lon": 77.57879,
+    "n_events": 19,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "41": {
+    "lat": 13.01107,
+    "lon": 77.62473,
+    "n_events": 6,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Airport New South Road"
+  },
+  "42": {
+    "lat": 12.98737,
+    "lon": 77.47516,
+    "n_events": 18,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "43": {
+    "lat": 13.06611,
+    "lon": 77.64112,
+    "n_events": 9,
+    "top_cause": "construction",
+    "corridor": "Non-corridor"
+  },
+  "44": {
+    "lat": 12.87452,
+    "lon": 77.54164,
+    "n_events": 5,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "45": {
+    "lat": 13.02657,
+    "lon": 77.52003,
+    "n_events": 6,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "46": {
+    "lat": 13.0541,
+    "lon": 77.76239,
+    "n_events": 6,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "47": {
+    "lat": 13.18442,
+    "lon": 77.68022,
+    "n_events": 5,
+    "top_cause": "construction",
+    "corridor": "Non-corridor"
+  },
+  "48": {
+    "lat": 12.91227,
+    "lon": 77.48538,
+    "n_events": 7,
+    "top_cause": "others",
+    "corridor": "Mysore Road"
+  },
+  "49": {
+    "lat": 13.09673,
+    "lon": 77.56456,
+    "n_events": 8,
+    "top_cause": "accident",
+    "corridor": "Non-corridor"
+  },
+  "50": {
+    "lat": 13.04561,
+    "lon": 77.74988,
+    "n_events": 7,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "51": {
+    "lat": 13.03212,
+    "lon": 77.56163,
+    "n_events": 19,
+    "top_cause": "tree_fall",
+    "corridor": "Non-corridor"
+  },
+  "52": {
+    "lat": 13.06104,
+    "lon": 77.57584,
+    "n_events": 5,
+    "top_cause": "tree_fall",
+    "corridor": "Non-corridor"
+  },
+  "53": {
+    "lat": 12.87894,
+    "lon": 77.61024,
+    "n_events": 15,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "54": {
+    "lat": 13.00481,
+    "lon": 77.63658,
+    "n_events": 6,
+    "top_cause": "congestion",
+    "corridor": "Non-corridor"
+  },
+  "55": {
+    "lat": 12.80151,
+    "lon": 77.71119,
+    "n_events": 5,
+    "top_cause": "construction",
+    "corridor": "Non-corridor"
+  },
+  "56": {
+    "lat": 13.05768,
+    "lon": 77.54633,
+    "n_events": 12,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "57": {
+    "lat": 13.05785,
+    "lon": 77.63264,
+    "n_events": 12,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Hennur Main Road"
+  },
+  "58": {
+    "lat": 12.9197,
+    "lon": 77.54305,
+    "n_events": 7,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "59": {
+    "lat": 13.22957,
+    "lon": 77.6903,
+    "n_events": 6,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "60": {
+    "lat": 13.02715,
+    "lon": 77.62032,
+    "n_events": 8,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "61": {
+    "lat": 12.87673,
+    "lon": 77.61663,
+    "n_events": 7,
+    "top_cause": "pot_holes",
+    "corridor": "Non-corridor"
+  },
+  "62": {
+    "lat": 12.88733,
+    "lon": 77.7382,
+    "n_events": 5,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Non-corridor"
+  },
+  "63": {
+    "lat": 12.90177,
+    "lon": 77.66054,
+    "n_events": 5,
+    "top_cause": "others",
+    "corridor": "Non-corridor"
+  },
+  "64": {
+    "lat": 13.10268,
+    "lon": 77.6278,
+    "n_events": 6,
+    "top_cause": "procession",
+    "corridor": "Non-corridor"
+  },
+  "65": {
+    "lat": 12.95569,
+    "lon": 77.67759,
+    "n_events": 5,
+    "top_cause": "vehicle_breakdown",
+    "corridor": "Old Airport Road"
+  }
+}

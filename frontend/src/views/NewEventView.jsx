@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Loader2, Map, Navigation, Shield, Zap } from 'lucide-react'
+import { CheckCircle2, Loader2, Map, Navigation, Shield, Users, Zap } from 'lucide-react'
 import GlassCard from '../components/GlassCard'
 import FormSelect from '../components/FormSelect'
 import MapplsEventMap from '../components/MapplsEventMap'
@@ -50,52 +50,162 @@ function SurvivalChart({ survival }) {
 }
 
 // ── Prescriptive Panel ───────────────────────────────────────────────────────
+function humanizeCause(cause) {
+  if (!cause) return 'incident'
+  return String(cause).replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+function buildFallbackSummary(presc) {
+  const rec = presc.recommendations || {}
+  const mp = rec.manpower || {}
+  const bar = rec.barricading || {}
+  const wi = presc.what_if || {}
+  const inputs = presc.inputs_summary || {}
+  const officers = mp.officers_recommended ?? 0
+  const minNeed = mp.min_needed ?? officers
+  const station = mp.nearest_station || 'nearest station'
+  const corridor = inputs.corridor || 'this corridor'
+  const cause = humanizeCause(inputs.event_cause || presc.event_cause)
+  const barricade = bar.level || 'PARTIAL'
+  const p50 = inputs.p50_hours ?? wi.baseline_delay_units
+  const imp = wi.improvement_pct
+
+  return {
+    headline: `${cause} on ${corridor}: send ${officers} officers, ${barricade.toLowerCase()} barricade.`,
+    manpower_message: officers >= minNeed
+      ? `Assign ${officers} officers from ${station} to control traffic on ${corridor}.`
+      : `Only ${officers} of ${minNeed} officers available from ${station} — request backup.`,
+    barricade_message: barricade === 'FULL'
+      ? `Close the road at ${corridor} until the scene is cleared.`
+      : barricade === 'PARTIAL'
+        ? `Block one direction at ${corridor}; keep one lane for emergency vehicles.`
+        : `Use cones at ${corridor} and allow slow single-file traffic.`,
+    diversion_message: rec.diversions?.length
+      ? `Route traffic using the suggested alternate path away from ${corridor}.`
+      : `Guide drivers to parallel roads near ${corridor}.`,
+    what_if_message: imp != null
+      ? `This plan could reduce congestion impact by about ${Number(imp).toFixed(0)}% compared with no action.`
+      : null,
+    predicted_clearance_hrs: p50,
+    officers_recommended: officers,
+    barricade_level: barricade,
+    improvement_pct: imp,
+  }
+}
+
 function PrescriptivePanel({ presc }) {
   if (!presc) return null
-  const mp = presc.manpower || {}
-  const bd = presc.barricade_diversion || {}
-  const wi = presc.what_if || {}
+
+  const d = presc.display_summary?.headline
+    ? presc.display_summary
+    : buildFallbackSummary(presc)
+  const rec = presc.recommendations || {}
+  const mp = rec.manpower || {}
+  const bar = rec.barricading || {}
+
+  const officers = d.officers_recommended ?? mp.officers_recommended
+  const barricade = d.barricade_level ?? bar.level ?? '—'
+  const improvement = d.improvement_pct ?? presc.what_if?.improvement_pct
+  const clearance = d.predicted_clearance_hrs
+  const confMsg = d.confidence_message
+  const confPct = d.confidence_pct ?? (presc.confidence?.score != null ? Math.round(presc.confidence.score * 100) : null)
+
+  const barricadeLabel = { FULL: 'Full closure', PARTIAL: 'Partial block', MINIMAL: 'Cones only' }[barricade] || barricade
+  const barricadeColor = barricade === 'FULL' ? ACCENT.terracotta : barricade === 'PARTIAL' ? ACCENT.amber : ACCENT.success
+
+  const steps = [
+    { key: 'manpower', label: 'Deploy officers', icon: Users, text: d.manpower_message },
+    { key: 'barricade', label: 'Barricade & closure', icon: Shield, text: d.barricade_message },
+    { key: 'diversion', label: 'Divert traffic', icon: Navigation, text: d.diversion_message },
+    { key: 'whatif', label: 'Expected outcome', icon: Zap, text: d.what_if_message },
+  ].filter((s) => s.text)
+
   return (
-    <GlassCard className="p-5 border-l-4" style={{ borderLeftColor: ACCENT.success }}>
-      <h3 className="text-storm-100 font-semibold mb-3 flex items-center gap-2">
-        <Shield size={18} className="text-accent-success" /> Prescriptive Recommendations
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-        <div className="space-y-1">
-          <p className="text-storm-100/50 text-xs uppercase">Manpower</p>
-          <p className="text-2xl font-black text-storm-300">{mp.total_deployed ?? '—'} <span className="text-sm font-normal text-storm-100/50">officers</span></p>
-          <p className="text-storm-100/60 text-xs">{mp.station || 'Nearest station'}</p>
-          {mp.narrative && <p className="text-storm-100/50 text-xs mt-1">{mp.narrative}</p>}
-        </div>
-        <div className="space-y-1">
-          <p className="text-storm-100/50 text-xs uppercase">Barricade Level</p>
-          <p className="text-2xl font-black" style={{ color: bd.barricade_level === 'FULL' ? ACCENT.terracotta : bd.barricade_level === 'PARTIAL' ? ACCENT.amber : ACCENT.success }}>
-            {bd.barricade_level ?? '—'}
+    <GlassCard className="p-5 border-l-4 space-y-4" style={{ borderLeftColor: ACCENT.success }}>
+      <div>
+        <h3 className="text-storm-100 font-semibold flex items-center gap-2">
+          <Shield size={18} className="text-accent-success" /> What To Do Next
+        </h3>
+        <p className="text-storm-100/85 text-sm mt-2 leading-relaxed font-medium">{d.headline}</p>
+        {d.time_context && (
+          <p className="text-storm-100/45 text-xs mt-1">Traffic context: {d.time_context}</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-xl p-3 bento-card">
+          <p className="text-storm-100/45 text-[10px] uppercase tracking-wide flex items-center gap-1">
+            <Users size={11} /> Officers
           </p>
-          {bd.diversion_routes?.length > 0 && (
-            <div className="mt-1 space-y-0.5">
-              <p className="text-storm-100/40 text-xs">Diversion routes:</p>
-              {bd.diversion_routes.slice(0, 2).map((r, i) => (
-                <p key={i} className="text-storm-100/60 text-xs flex items-center gap-1">
-                  <Navigation size={9} /> {typeof r === 'string' ? r : r.route || r.description || JSON.stringify(r)}
-                </p>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="space-y-1">
-          <p className="text-storm-100/50 text-xs uppercase">What-if Improvement</p>
-          <p className="text-2xl font-black text-accent-success">
-            {wi.delay_reduction_pct != null ? `-${wi.delay_reduction_pct.toFixed(0)}%` : wi.estimated_reduction_hrs != null ? `-${wi.estimated_reduction_hrs.toFixed(1)}h` : '—'}
+          <p className="text-2xl font-black text-storm-300 mt-1">
+            {officers ?? '—'}
           </p>
-          <p className="text-storm-100/60 text-xs">{wi.narrative || wi.summary || 'vs. no-action baseline'}</p>
-          {presc.confidence && (
-            <p className="text-storm-100/40 text-xs mt-1">Confidence: {(presc.confidence * 100).toFixed(0)}%</p>
-          )}
+          <p className="text-storm-100/40 text-xs mt-0.5">from {mp.nearest_station || 'nearest station'}</p>
+        </div>
+        <div className="rounded-xl p-3 bento-card">
+          <p className="text-storm-100/45 text-[10px] uppercase tracking-wide">Barricade</p>
+          <p className="text-lg font-bold mt-1 leading-tight" style={{ color: barricadeColor }}>{barricadeLabel}</p>
+          <p className="text-storm-100/40 text-xs mt-0.5">
+            {(bar.control_points?.length ?? 0)} control point{(bar.control_points?.length ?? 0) === 1 ? '' : 's'}
+          </p>
+        </div>
+        <div className="rounded-xl p-3 bento-card">
+          <p className="text-storm-100/45 text-[10px] uppercase tracking-wide">Clear in</p>
+          <p className="text-2xl font-black text-storm-300 mt-1">
+            {clearance != null ? `${Number(clearance).toFixed(1)}h` : '—'}
+          </p>
+          <p className="text-storm-100/40 text-xs mt-0.5">estimated clearance</p>
+        </div>
+        <div className="rounded-xl p-3 bento-card">
+          <p className="text-storm-100/45 text-[10px] uppercase tracking-wide">Less gridlock</p>
+          <p className="text-2xl font-black text-accent-success mt-1">
+            {improvement != null ? `~${Number(improvement).toFixed(0)}%` : '—'}
+          </p>
+          <p className="text-storm-100/40 text-xs mt-0.5">vs doing nothing</p>
         </div>
       </div>
-      {presc.rationale && (
-        <p className="mt-3 text-storm-100/50 text-xs border-t border-white/[0.06] pt-3">{presc.rationale}</p>
+
+      <div className="space-y-3 text-sm">
+        {steps.map((step, i) => {
+          const Icon = step.icon
+          return (
+            <div key={step.key} className="rounded-lg px-3 py-2.5 bento-card">
+              <p className="text-storm-100/45 text-[10px] uppercase tracking-wide mb-1 flex items-center gap-1">
+                <Icon size={10} /> {i + 1} · {step.label}
+              </p>
+              <p className="text-storm-100/80 leading-relaxed">{step.text}</p>
+            </div>
+          )
+        })}
+      </div>
+
+      {d.action_items?.length > 0 && (
+        <div className="border-t border-white/[0.06] pt-3">
+          <p className="text-storm-100/50 text-xs uppercase tracking-wide mb-2">Shift checklist</p>
+          <ul className="space-y-1.5">
+            {d.action_items.map((item, i) => (
+              <li key={i} className="text-storm-100/75 text-sm flex items-start gap-2">
+                <CheckCircle2 size={14} className="shrink-0 mt-0.5 text-accent-success" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {d.cascade_watch_messages?.length > 0 && (
+        <div className="alert-amber text-sm rounded-lg px-3 py-2.5 border-t border-white/[0.06] pt-3 -mx-1">
+          <p className="font-medium text-accent-amber mb-0.5">Cascade risk</p>
+          {d.cascade_watch_messages.map((msg, i) => (
+            <p key={i} className="text-storm-100/70 text-xs leading-relaxed">{msg}</p>
+          ))}
+        </div>
+      )}
+
+      {(confMsg || confPct != null) && (
+        <p className="text-storm-100/45 text-xs leading-relaxed border-t border-white/[0.06] pt-3">
+          {confMsg || `Recommendation confidence: ${d.confidence_label || presc.confidence?.label} (${confPct}%)`}
+        </p>
       )}
     </GlassCard>
   )
@@ -218,7 +328,7 @@ export default function NewEventView() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <GlassCard className="p-5 bento-card">
-                  <h3 className="text-storm-100/60 text-xs uppercase mb-2">GridGuard V12 Prediction</h3>
+                  <h3 className="text-storm-100/60 text-xs uppercase mb-2">Predicted Duration</h3>
                   <div className="text-4xl font-black text-storm-300">{result.ml_prediction.predicted_hours}h</div>
                   <p className="text-storm-100/50 text-sm mt-1">
                     P10 {result.ml_prediction.p10_hours}h · P90 {result.ml_prediction.p90_hours}h

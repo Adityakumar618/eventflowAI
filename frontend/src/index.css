@@ -218,3 +218,17 @@ html.light-theme .alert-amber {
 html.light-theme .glass-card {
   box-shadow: 0 4px 20px rgba(30, 29, 26, 0.08);
 }
+
+/* Mappls SDK popups — prevent dark-theme bleed (white box / invisible text) */
+.mappls-popup-content,
+.mappls-popup-tip,
+.mapboxgl-popup-content,
+.mapboxgl-popup-tip {
+  background: #ffffff !important;
+  color: #16130e !important;
+}
+
+.mappls-popup-content *,
+.mapboxgl-popup-content * {
+  color: inherit;
+}

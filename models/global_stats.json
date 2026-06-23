@@ -1,0 +1,21 @@
+{
+  "cause_mean": {
+    "accident": 0.7997077955140485,
+    "congestion": 1.2464951724873736,
+    "construction": 224.59959761880532,
+    "debris": 1621.7107797788194,
+    "fog/low_visibility": 1.075249883611111,
+    "others": 208.27739699847922,
+    "pot_holes": 591.948705042561,
+    "procession": 0.9102664173931624,
+    "protest": 0.4771372157407407,
+    "public_event": 1.075249883611111,
+    "road_conditions": 431.47031492802233,
+    "test_demo": 0.05,
+    "tree_fall": 102.68163068841731,
+    "vehicle_breakdown": 0.9677596204871198,
+    "vip_movement": 1.075249883611111,
+    "water_logging": 204.94458906810357
+  },
+  "global_median": 1.075249883611111
+}
