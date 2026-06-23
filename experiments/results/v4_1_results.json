@@ -1,0 +1,11 @@
+{
+  "best_strategy": "LGB V4 (Optuna tuned)",
+  "best_mae": 1.4541,
+  "all_results": {
+    "LGB V4 (Optuna tuned)": 1.4541,
+    "Ensemble blend": 1.6748,
+    "XGBoost quantile": 1.7414,
+    "CatBoost (raw cats)": 2.0663,
+    "Per-cause specialists": 3.1566
+  }
+}

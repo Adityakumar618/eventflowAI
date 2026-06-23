@@ -1,0 +1,61 @@
+{
+  "key_finding": "closed_datetime has 38.5% non-null rate. When correctly used, VB median drops from 616h to 0.7h. The operational model (<=48h window) is now accurate and meaningful.",
+  "model_summary": {
+    "LGB_observed_only": {
+      "mae": 24.076,
+      "rmse": 84.178,
+      "cindex": 0.506
+    },
+    "LGB_operational_48h": {
+      "mae": 3.279,
+      "rmse": 7.837,
+      "cindex": 0.498
+    },
+    "Weibull_AFT_correct": {
+      "mae": 779.744,
+      "rmse": 782.484,
+      "cindex": 0.557
+    },
+    "Stratified_by_cause": {
+      "mae": 24.998,
+      "rmse": 86.128,
+      "cindex": 0.512
+    }
+  },
+  "recommended_model": "LGB_operational_48h",
+  "recommended_features": [
+    "hour",
+    "day_of_week",
+    "month",
+    "is_weekend",
+    "is_rush",
+    "is_night",
+    "hour_sin",
+    "hour_cos",
+    "is_weather",
+    "requires_road_closure",
+    "event_cause_enc",
+    "zone_enc",
+    "corridor_enc",
+    "police_station_enc",
+    "cause_mean",
+    "cause_median",
+    "cause_p90",
+    "cause_std",
+    "station_mean",
+    "corridor_mean",
+    "corridor_cnt",
+    "cause_x_rush",
+    "cause_x_night",
+    "cause_x_zone",
+    "cause_x_closure",
+    "station_x_cause"
+  ],
+  "shap_top5": [
+    "station_mean",
+    "cause_mean",
+    "cause_median",
+    "corridor_mean",
+    "is_night"
+  ]
+}

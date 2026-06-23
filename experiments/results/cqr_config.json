@@ -1,0 +1,10 @@
+{
+  "q_hat": 0.00072,
+  "alpha": 0.2,
+  "target_coverage": 0.8,
+  "achieved_coverage_test": 0.595,
+  "achieved_coverage_calib": "see above",
+  "p50_mae_hrs": 4.8032,
+  "avg_interval_width_hrs": 10.8716,
+  "verdict": "NEEDS_MORE_CALIB_DATA"
+}

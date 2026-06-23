@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="EventFlow AI — BTP Command Center for event-driven congestion forecasting in Bengaluru." />
+    <title>EventFlow AI — BTP Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'sans-serif'] },
+            colors: {
+              storm: {
+                bg: '#11100E',
+                surface: '#1A1815',
+                card: '#1A1B1E',
+                900: '#2A241C',
+                500: '#8F5C12',
+                300: '#D69A2D',
+                100: '#F4EBDD',
+                muted: '#A69E92',
+                ink: '#16130E',
+              },
+              accent: {
+                gold: '#D69A2D',
+                bronze: '#8F5C12',
+                amber: '#F59E0B',
+                terracotta: '#E07A5F',
+                success: '#6B8F71',
+              },
+            },
+          },
+        },
+      }
+    </script>
+  </head>
+  <body class="bg-[#11100E] text-[#F4EBDD] font-sans m-0 overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

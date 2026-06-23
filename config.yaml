@@ -1,0 +1,16 @@
+# API Keys
+MAPPLS_API_KEY: "omkzebnezitmjsnjyfuhxgqpoflzwuzjrqgu"
+
+# Paths
+DATA_RAW_DIR: "data/raw"
+DATA_PROCESSED_DIR: "data/processed"
+DATA_CACHE_DIR: "data/cache"
+DATA_PRECOMPUTED_DIR: "data/precomputed"
+MODELS_DIR: "models"
+
+# Thresholds
+STIS_WEIGHT_CAPACITY: 0.35
+STIS_WEIGHT_CENTRALITY: 0.30
+STIS_WEIGHT_ROUTING: 0.35
+CASCADE_DISTANCE_KM: 2.0
+CASCADE_TIME_MIN: 45

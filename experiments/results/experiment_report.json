@@ -1,0 +1,98 @@
+{
+  "experiment_timestamp": "2026-06-16T19:40:32.267263",
+  "dataset": {
+    "total_rows": 8173,
+    "closed_rows": 7166,
+    "date_range": [
+      "2023-11-09 19:24:48.154000",
+      "2024-04-08 17:11:42.780000"
+    ]
+  },
+  "feature_set_v2": [
+    "hour",
+    "day_of_week",
+    "month",
+    "is_weekend",
+    "is_rush_hour",
+    "hour_sin",
+    "hour_cos",
+    "is_monsoon",
+    "is_night",
+    "hour_avg_duration",
+    "dow_avg_duration",
+    "event_cause_encoded",
+    "zone_encoded",
+    "corridor_encoded",
+    "police_station_encoded",
+    "requires_road_closure",
+    "is_weather_related",
+    "cause_mean_dur",
+    "cause_median_dur",
+    "cause_p90_dur",
+    "cause_std_dur",
+    "cause_closure_rate",
+    "corridor_mean_dur",
+    "corridor_event_cnt",
+    "zone_mean_dur",
+    "station_mean_dur",
+    "station_event_cnt",
+    "cause_x_rush",
+    "cause_x_weekend",
+    "cause_x_zone",
+    "cause_x_closure",
+    "corridor_x_hour",
+    "station_x_cause",
+    "zone_24h_event_load",
+    "corridor_12h_load"
+  ],
+  "cv_folds": [
+    {
+      "name": "Fold 1 (Train:Nov-Jan, Test:Feb)",
+      "train": 4174,
+      "test": 1324
+    },
+    {
+      "name": "Fold 2 (Train:Nov-Feb, Test:Mar)",
+      "train": 5550,
+      "test": 1907
+    },
+    {
+      "name": "Fold 3 (Train:Nov-Mar, Test:Apr)",
+      "train": 7494,
+      "test": 628
+    }
+  ],
+  "model_comparison": {
+    "Weibull AFT": {
+      "mae": 172.338,
+      "rmse": 195.025,
+      "cindex": 0.574,
+      "mape": 22591.867
+    },
+    "LightGBM v1": {
+      "mae": 123.267,
+      "rmse": 178.773,
+      "cindex": 0.424,
+      "mape": 9456.633
+    },
+    "LightGBM v2 (UPGRADE)": {
+      "mae": 113.124,
+      "rmse": 156.935,
+      "cindex": 0.408,
+      "mape": 8030.567
+    },
+    "XGBoost Tweedie": {
+      "mae": 235.818,
+      "rmse": 270.05,
+      "cindex": 0.459,
+      "mape": 40272.667
+    },
+    "Stacking Ensemble": {
+      "mae": 202.752,
+      "rmse": 271.956,
+      "cindex": 0.468,
+      "mape": 27534.967
+    }
+  },
+  "recommendation": "LightGBM v2 or Stacking Ensemble with v2 features. Key upgrade: cause-level historical stats + 24h zone load + interaction terms."
+}

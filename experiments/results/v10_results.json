@@ -1,0 +1,83 @@
+{
+  "v9_honest_baseline": 2.843,
+  "v10_phase_a": {
+    "lgb": 3.4735,
+    "dart": 2.8811,
+    "xgb": 3.4954,
+    "cat": 3.3672
+  },
+  "v10_optuna_lgb_mae": 2.8501,
+  "v10_optuna_dart_mae": 2.8337,
+  "v10_optuna_xgb_mae": 3.0754,
+  "v10_optuna_cat_mae": 2.8823,
+  "v10_ensemble_mae": 2.8593,
+  "v10_stacked_mae": 3.2181,
+  "improvement_over_v9_pct": -13.19,
+  "best_lgb_params": {
+    "n_estimators": 202,
+    "learning_rate": 0.0034957804651040473,
+    "num_leaves": 250,
+    "min_child_samples": 57,
+    "colsample_bytree": 0.2511936151342888,
+    "subsample": 0.546541259640261,
+    "reg_alpha": 1.3683148625839745,
+    "reg_lambda": 0.25261340786674935,
+    "min_split_gain": 1.4973606277148546,
+    "max_depth": 15
+  },
+  "best_dart_params": {
+    "n_estimators": 994,
+    "learning_rate": 0.02168677420359887,
+    "num_leaves": 47,
+    "min_child_samples": 25,
+    "colsample_bytree": 0.4738383813953391,
+    "subsample": 0.9745529026726345,
+    "reg_alpha": 0.0037683951910483615,
+    "reg_lambda": 5.505670650908211e-08,
+    "drop_rate": 0.35679134980501076,
+    "skip_drop": 0.7887440309923177,
+    "max_depth": 13
+  },
+  "best_xgb_params": {
+    "learning_rate": 0.0030091762725457942,
+    "max_depth": 8,
+    "subsample": 0.9897881448493079,
+    "colsample_bytree": 0.30356084773369724,
+    "reg_alpha": 1.847399503850137e-06,
+    "reg_lambda": 6.660151679172621e-09,
+    "min_child_weight": 17,
+    "gamma": 1.6757055786330852,
+    "n_estimators": 683
+  },
+  "best_cat_params": {
+    "iterations": 312,
+    "learning_rate": 0.0032161319953083168,
+    "depth": 4,
+    "l2_leaf_reg": 10.993912816982906,
+    "bagging_temperature": 0.09091467022351063,
+    "random_strength": 2.8026946968288486
+  },
+  "ridge_weights": [
+    2.363502037924146,
+    0.7523027399661453,
+    -0.7842861618434234,
+    14.21003040507541
+  ],
+  "ridge_intercept": -17.49033988273959,
+  "shap_top10": {
+    "cluster_dur_loo": 0.03812,
+    "log_cluster_dur_loo": 0.02913,
+    "log_ratio_cluster": 0.02882,
+    "zone_cause_loo": 0.00997,
+    "log_zone_cause_loo": 0.00981,
+    "corridor_loo": 0.00907,
+    "veh_cause_loo": 0.00738,
+    "cause_median": 0.00723,
+    "hour_cause_mean": 0.00658,
+    "log_corridor_loo": 0.00625
+  },
+  "runtime_minutes": 41.5,
+  "hardware": "CPU",
+  "n_features": 85,
+  "n_folds": 4
+}

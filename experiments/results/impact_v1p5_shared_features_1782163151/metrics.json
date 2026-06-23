@@ -1,0 +1,22 @@
+{
+  "results": [
+    {
+      "name": "basic",
+      "avg_mae": 0.353,
+      "avg_planned_mae": 0.261,
+      "n_folds": 4
+    },
+    {
+      "name": "enhanced",
+      "avg_mae": 0.384,
+      "avg_planned_mae": 0.292,
+      "n_folds": 4
+    },
+    {
+      "name": "v9_heuristic_baseline",
+      "avg_mae": 8.117,
+      "avg_planned_mae": 10.517,
+      "n_folds": 4
+    }
+  ]
+}

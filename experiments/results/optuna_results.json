@@ -1,0 +1,17 @@
+{
+  "baseline_mae": 3.4417,
+  "tuned_mae": 3.2239,
+  "improvement_pct": 6.3,
+  "best_params": {
+    "n_estimators": 263,
+    "learning_rate": 0.010852343832388927,
+    "num_leaves": 103,
+    "min_child_samples": 44,
+    "colsample_bytree": 0.8630063471296281,
+    "subsample": 0.8633279451099549,
+    "reg_alpha": 0.00035480840355079746,
+    "reg_lambda": 0.0011423634733032089
+  },
+  "n_trials": 60,
+  "verdict": "USE_TUNED"
+}

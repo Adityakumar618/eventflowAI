@@ -1,0 +1,5 @@
+{
+  "n_splits": 4,
+  "target": "log_impact",
+  "model": "LGBM regression"
+}

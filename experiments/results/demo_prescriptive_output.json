@@ -1,0 +1,663 @@
+[
+  {
+    "event": {
+      "event_id": "demo_1",
+      "event_cause": "water_logging",
+      "corridor": "Hebbal - Silk Board",
+      "zone": "Central",
+      "police_station": "Hebbal",
+      "hour": 18,
+      "lat": 13.035,
+      "lon": 77.597,
+      "requires_road_closure": false,
+      "predicted_hours": 3.5,
+      "p35_hours": 2.1,
+      "p50_hours": 3.0,
+      "p65_hours": 4.5,
+      "impact_score": 8.5,
+      "regime": "medium",
+      "active_overlap": 2,
+      "graph_features": {},
+      "affected_subgraph": {}
+    },
+    "recommendation": {
+      "event_id": "demo_1",
+      "recommendations": {
+        "manpower": {
+          "officers_recommended": 14,
+          "min_needed": 5,
+          "nearest_station": "Hebbal",
+          "coverage_ratio": 2.8,
+          "status": "FULLY COVERED"
+        },
+        "barricading": {
+          "level": "FULL",
+          "control_points": [
+            {
+              "label": "nagawara junction",
+              "lat": 13.0389307,
+              "lon": 77.625055,
+              "reason": "High betweenness upstream control point"
+            },
+            {
+              "label": "Hennur Main Road",
+              "lat": 13.041338249999999,
+              "lon": 77.62492585000001,
+              "reason": "High betweenness upstream control point"
+            },
+            {
+              "label": "Hebbal",
+              "lat": 13.0354,
+              "lon": 77.591,
+              "reason": "Event origin \u2014 primary barricade"
+            }
+          ],
+          "upstream_points": [
+            {
+              "node_id": "corridor:hennur main road",
+              "label": "Hennur Main Road",
+              "lat": 13.041338249999999,
+              "lon": 77.62492585000001,
+              "betweenness": 0.038946,
+              "role": "upstream_detour_signage"
+            },
+            {
+              "node_id": "junction:nagawara junction",
+              "label": "nagawara junction",
+              "lat": 13.0389307,
+              "lon": 77.625055,
+              "betweenness": 0.005449,
+              "role": "upstream_detour_signage"
+            }
+          ]
+        },
+        "diversions": [
+          {
+            "route_id": "alt_1",
+            "target": "Silk Board",
+            "waypoints": [
+              "Hebbal",
+              "nagawara junction",
+              "Hennur Main Road",
+              "Old Madras Road",
+              "IRR(Thanisandra road)"
+            ],
+            "path_nodes": [
+              "junction:major_hebbal",
+              "junction:nagawara junction",
+              "corridor:hennur main road",
+              "corridor:old madras road",
+              "corridor:irrthanisandra road",
+              "junction:koramangala water tank junction",
+              "junction:major_silk_board"
+            ],
+            "distance_km": 17.81,
+            "est_travel_mins": 91.9,
+            "est_time_savings_mins": 0.0,
+            "rationale": "Avoids 8 high-impact corridor segment(s); estimated 0 min savings vs baseline during hour 18."
+          },
+          {
+            "route_id": "alt_2",
+            "target": "Mekhri",
+            "waypoints": [
+              "Hebbal",
+              "nagawara junction",
+              "Hennur Main Road",
+              "ORR North 1",
+              "CBD 2"
+            ],
+            "path_nodes": [
+              "junction:major_hebbal",
+              "junction:nagawara junction",
+              "corridor:hennur main road",
+              "corridor:orr north 1",
+              "corridor:cbd 2",
+              "junction:queens road junction",
+              "junction:major_mekhri"
+            ],
+            "distance_km": 15.46,
+            "est_travel_mins": 79.8,
+            "est_time_savings_mins": 0.0,
+            "rationale": "Avoids 8 high-impact corridor segment(s); estimated 0 min savings vs baseline during hour 18."
+          }
+        ],
+        "cascade_watch": [
+          "accident",
+          "vehicle_breakdown"
+        ]
+      },
+      "manpower_allocation": {
+        "solver": "pulp",
+        "triage_active": false,
+        "total_deployed": 14,
+        "allocation": {
+          "demo_1": {
+            "officers_assigned": 14,
+            "min_needed": 5,
+            "impact_weight": 10.54,
+            "coverage_ratio": 2.8,
+            "status": "FULLY COVERED",
+            "eligible_stations": [
+              "Yelahanka",
+              "Hebbal",
+              "Vidyaranyapura",
+              "Kodigehalli",
+              "Jalahalli",
+              "Rajajinagar",
+              "Malleshwaram",
+              "Sadashivanagar",
+              "Sanjaynagar",
+              "RT Nagar",
+              "Shivajinagar",
+              "Cubbon Park",
+              "MG Road",
+              "Ulsoor",
+              "Indiranagar",
+              "Halasuru",
+              "Yeshwanthpur",
+              "Majestic",
+              "Cottonpet",
+              "Seshadripuram",
+              "Bagalagunte",
+              "Peenya",
+              "Tumkur Road",
+              "Domlur",
+              "Ramamurthy Nagar",
+              "KG Halli"
+            ],
+            "nearest_station": "Hebbal"
+          }
+        },
+        "station_assignments": {
+          "Cottonpet": {
+            "demo_1": 8
+          },
+          "Bagalagunte": {
+            "demo_1": 6
+          }
+        }
+      },
+      "what_if": {
+        "baseline_delay_units": 74.562,
+        "projected_delay_units": 1.163,
+        "improvement_pct": 98.4,
+        "improvement_absolute": 73.399,
+        "decomposition": {
+          "manpower_reduction_pct": 98.0,
+          "barricade_reduction_pct": 22.0,
+          "diversion_reduction_pct": 0.0
+        },
+        "confidence": {
+          "score": 0.82,
+          "label": "HIGH"
+        },
+        "queueing_model": "lightweight_mmc_proxy"
+      },
+      "rationale": [
+        "MoE regime=medium: P50=3.0h (band 2.1\u20134.5h), impact=8.5.",
+        "Active overlap within 2km: 2 concurrent event(s).",
+        "Manpower (pulp): assign 14 officers (need 5, coverage 280%).",
+        "Barricade plan: FULL at 3 point(s).",
+        "Diversion: 2 route(s); best savings ~0.0 min.",
+        "What-if: 98.4% delay reduction expected (confidence HIGH)."
+      ],
+      "inputs_summary": {
+        "regime": "medium",
+        "p35_hours": 2.1,
+        "p50_hours": 3.0,
+        "p65_hours": 4.5,
+        "impact_score": 8.5,
+        "active_overlap": 2,
+        "corridor": "Hebbal - Silk Board",
+        "zone": "Central"
+      },
+      "confidence": {
+        "score": 0.82,
+        "label": "HIGH"
+      }
+    }
+  },
+  {
+    "event": {
+      "event_id": "demo_2",
+      "event_cause": "accident",
+      "corridor": "Silk Board Junction",
+      "zone": "South",
+      "police_station": "Madiwala",
+      "hour": 8,
+      "lat": 12.9177,
+      "lon": 77.6228,
+      "requires_road_closure": true,
+      "predicted_hours": 5.2,
+      "p35_hours": 4.0,
+      "p50_hours": 5.0,
+      "p65_hours": 6.5,
+      "impact_score": 9.2,
+      "regime": "long",
+      "active_overlap": 4,
+      "graph_features": {},
+      "affected_subgraph": {}
+    },
+    "recommendation": {
+      "event_id": "demo_2",
+      "recommendations": {
+        "manpower": {
+          "officers_recommended": 14,
+          "min_needed": 10,
+          "nearest_station": "Silk Board",
+          "coverage_ratio": 1.4,
+          "status": "FULLY COVERED"
+        },
+        "barricading": {
+          "level": "FULL",
+          "control_points": [
+            {
+              "label": "koramangala water tank junction",
+              "lat": 12.9275049,
+              "lon": 77.6212967,
+              "reason": "High betweenness upstream control point"
+            },
+            {
+              "label": "Silk Board",
+              "lat": 12.9177,
+              "lon": 77.6228,
+              "reason": "Event origin \u2014 primary barricade"
+            }
+          ],
+          "upstream_points": [
+            {
+              "node_id": "corridor:noncorridor",
+              "label": "Non-corridor",
+              "lat": 12.98071455,
+              "lon": 77.5868232,
+              "betweenness": 0.76405,
+              "role": "upstream_detour_signage"
+            },
+            {
+              "node_id": "corridor:irrthanisandra road",
+              "label": "IRR(Thanisandra road)",
+              "lat": 12.9280618,
+              "lon": 77.6214437,
+              "betweenness": 0.094731,
+              "role": "upstream_detour_signage"
+            },
+            {
+              "node_id": "corridor:orr east 1",
+              "label": "ORR East 1",
+              "lat": 12.92644525,
+              "lon": 77.6778278,
+              "betweenness": 0.055702,
+              "role": "upstream_detour_signage"
+            }
+          ]
+        },
+        "diversions": [
+          {
+            "route_id": "alt_1",
+            "target": "Hebbal",
+            "waypoints": [
+              "Silk Board",
+              "sri mahasharana madiwala maachideva flyover",
+              "Hosur Road",
+              "Old Madras Road",
+              "Hennur Main Road"
+            ],
+            "path_nodes": [
+              "junction:major_silk_board",
+              "junction:sri mahasharana madiwala maachideva flyover",
+              "corridor:hosur road",
+              "corridor:old madras road",
+              "corridor:hennur main road",
+              "junction:nagawara junction",
+              "junction:major_hebbal"
+            ],
+            "distance_km": 17.83,
+            "est_travel_mins": 83.4,
+            "est_time_savings_mins": 0.0,
+            "rationale": "Avoids 152 high-impact corridor segment(s); estimated 0 min savings vs baseline during hour 8."
+          },
+          {
+            "route_id": "alt_2",
+            "target": "Mekhri",
+            "waypoints": [
+              "Silk Board",
+              "sri mahasharana madiwala maachideva flyover",
+              "Hosur Road",
+              "CBD 1",
+              "CBD 2"
+            ],
+            "path_nodes": [
+              "junction:major_silk_board",
+              "junction:sri mahasharana madiwala maachideva flyover",
+              "corridor:hosur road",
+              "corridor:cbd 1",
+              "corridor:cbd 2",
+              "junction:queens road junction",
+              "junction:major_mekhri"
+            ],
+            "distance_km": 12.06,
+            "est_travel_mins": 56.5,
+            "est_time_savings_mins": 0.0,
+            "rationale": "Avoids 152 high-impact corridor segment(s); estimated 0 min savings vs baseline during hour 8."
+          }
+        ],
+        "cascade_watch": [
+          "vehicle_breakdown",
+          "congestion"
+        ]
+      },
+      "manpower_allocation": {
+        "solver": "pulp",
+        "triage_active": false,
+        "total_deployed": 14,
+        "allocation": {
+          "demo_2": {
+            "officers_assigned": 14,
+            "min_needed": 10,
+            "impact_weight": 21.021,
+            "coverage_ratio": 1.4,
+            "status": "FULLY COVERED",
+            "eligible_stations": [
+              "Shivajinagar",
+              "Cubbon Park",
+              "MG Road",
+              "Ulsoor",
+              "Indiranagar",
+              "Halasuru",
+              "Marathahalli",
+              "HSR Layout",
+              "Koramangala",
+              "Bellandur",
+              "Electronic City",
+              "BTM Layout",
+              "JP Nagar",
+              "Jayanagar",
+              "Basavanagudi",
+              "Banashankari",
+              "Uttarahalli",
+              "Rajendranagar",
+              "Majestic",
+              "Cottonpet",
+              "Seshadripuram",
+              "Domlur",
+              "HAL",
+              "Silk Board",
+              "Begur",
+              "KG Halli"
+            ],
+            "nearest_station": "Silk Board"
+          }
+        },
+        "station_assignments": {
+          "BTM Layout": {
+            "demo_2": 6
+          },
+          "Banashankari": {
+            "demo_2": 8
+          }
+        }
+      },
+      "what_if": {
+        "baseline_delay_units": 208.283,
+        "projected_delay_units": 82.855,
+        "improvement_pct": 60.2,
+        "improvement_absolute": 125.428,
+        "decomposition": {
+          "manpower_reduction_pct": 49.0,
+          "barricade_reduction_pct": 22.0,
+          "diversion_reduction_pct": 0.0
+        },
+        "confidence": {
+          "score": 0.85,
+          "label": "HIGH"
+        },
+        "queueing_model": "lightweight_mmc_proxy"
+      },
+      "rationale": [
+        "MoE regime=long: P50=5.0h (band 4.0\u20136.5h), impact=9.2.",
+        "Active overlap within 2km: 4 concurrent event(s).",
+        "Manpower (pulp): assign 14 officers (need 10, coverage 140%).",
+        "Barricade plan: FULL at 2 point(s).",
+        "Diversion: 2 route(s); best savings ~0.0 min.",
+        "What-if: 60.2% delay reduction expected (confidence HIGH)."
+      ],
+      "inputs_summary": {
+        "regime": "long",
+        "p35_hours": 4.0,
+        "p50_hours": 5.0,
+        "p65_hours": 6.5,
+        "impact_score": 9.2,
+        "active_overlap": 4,
+        "corridor": "Silk Board Junction",
+        "zone": "South"
+      },
+      "confidence": {
+        "score": 0.85,
+        "label": "HIGH"
+      }
+    }
+  },
+  {
+    "event": {
+      "event_id": "demo_3",
+      "event_cause": "tree_fall",
+      "corridor": "Mekhri Circle",
+      "zone": "North",
+      "police_station": "Yeshwanthpur",
+      "hour": 14,
+      "lat": 13.009,
+      "lon": 77.577,
+      "requires_road_closure": false,
+      "predicted_hours": 1.5,
+      "p35_hours": 1.0,
+      "p50_hours": 1.4,
+      "p65_hours": 2.2,
+      "impact_score": 3.4,
+      "regime": "short",
+      "active_overlap": 0,
+      "graph_features": {},
+      "affected_subgraph": {}
+    },
+    "recommendation": {
+      "event_id": "demo_3",
+      "recommendations": {
+        "manpower": {
+          "officers_recommended": 14,
+          "min_needed": 3,
+          "nearest_station": "Sadashivanagar",
+          "coverage_ratio": 4.667,
+          "status": "FULLY COVERED"
+        },
+        "barricading": {
+          "level": "MINIMAL",
+          "control_points": [
+            {
+              "label": "CBD 2",
+              "lat": 12.983084049999999,
+              "lon": 77.59662495,
+              "reason": "High betweenness upstream control point"
+            },
+            {
+              "label": "queens road junction",
+              "lat": 12.98323125,
+              "lon": 77.5970172,
+              "reason": "High betweenness upstream control point"
+            },
+            {
+              "label": "Mekhri",
+              "lat": 13.009,
+              "lon": 77.577,
+              "reason": "Event origin \u2014 primary barricade"
+            }
+          ],
+          "upstream_points": [
+            {
+              "node_id": "corridor:cbd 2",
+              "label": "CBD 2",
+              "lat": 12.983084049999999,
+              "lon": 77.59662495,
+              "betweenness": 0.106197,
+              "role": "upstream_detour_signage"
+            },
+            {
+              "node_id": "junction:queens road junction",
+              "label": "queens road junction",
+              "lat": 12.98323125,
+              "lon": 77.5970172,
+              "betweenness": 0.005419,
+              "role": "upstream_detour_signage"
+            }
+          ]
+        },
+        "diversions": [
+          {
+            "route_id": "alt_1",
+            "target": "Silk Board",
+            "waypoints": [
+              "Mekhri",
+              "queens road junction",
+              "CBD 2",
+              "IRR(Thanisandra road)",
+              "koramangala water tank junction"
+            ],
+            "path_nodes": [
+              "junction:major_mekhri",
+              "junction:queens road junction",
+              "corridor:cbd 2",
+              "corridor:irrthanisandra road",
+              "junction:koramangala water tank junction",
+              "junction:major_silk_board"
+            ],
+            "distance_km": 11.49,
+            "est_travel_mins": 39.2,
+            "est_time_savings_mins": 0.0,
+            "rationale": "Avoids 20 high-impact corridor segment(s); estimated 0 min savings vs baseline during hour 14."
+          },
+          {
+            "route_id": "alt_2",
+            "target": "Hebbal",
+            "waypoints": [
+              "Mekhri",
+              "queens road junction",
+              "CBD 2",
+              "ORR North 1",
+              "Hennur Main Road"
+            ],
+            "path_nodes": [
+              "junction:major_mekhri",
+              "junction:queens road junction",
+              "corridor:cbd 2",
+              "corridor:orr north 1",
+              "corridor:hennur main road",
+              "junction:nagawara junction",
+              "junction:major_hebbal"
+            ],
+            "distance_km": 15.46,
+            "est_travel_mins": 52.7,
+            "est_time_savings_mins": 0.0,
+            "rationale": "Avoids 20 high-impact corridor segment(s); estimated 0 min savings vs baseline during hour 14."
+          }
+        ],
+        "cascade_watch": [
+          "accident",
+          "congestion"
+        ]
+      },
+      "manpower_allocation": {
+        "solver": "pulp",
+        "triage_active": false,
+        "total_deployed": 14,
+        "allocation": {
+          "demo_3": {
+            "officers_assigned": 14,
+            "min_needed": 3,
+            "impact_weight": 2.89,
+            "coverage_ratio": 4.667,
+            "status": "FULLY COVERED",
+            "eligible_stations": [
+              "Hebbal",
+              "Vidyaranyapura",
+              "Kodigehalli",
+              "Jalahalli",
+              "Rajajinagar",
+              "Malleshwaram",
+              "Sadashivanagar",
+              "Sanjaynagar",
+              "RT Nagar",
+              "Shivajinagar",
+              "Cubbon Park",
+              "MG Road",
+              "Ulsoor",
+              "Indiranagar",
+              "Halasuru",
+              "Koramangala",
+              "Jayanagar",
+              "Basavanagudi",
+              "Banashankari",
+              "Yeshwanthpur",
+              "Vijayanagar",
+              "Rajendranagar",
+              "Majestic",
+              "Cottonpet",
+              "Seshadripuram",
+              "Bagalagunte",
+              "Nagarbhavi",
+              "Peenya",
+              "Tumkur Road",
+              "Domlur",
+              "Ramamurthy Nagar",
+              "KG Halli"
+            ],
+            "nearest_station": "Sadashivanagar"
+          }
+        },
+        "station_assignments": {
+          "Banashankari": {
+            "demo_3": 8
+          },
+          "Bagalagunte": {
+            "demo_3": 6
+          }
+        }
+      },
+      "what_if": {
+        "baseline_delay_units": 5.745,
+        "projected_delay_units": -3.494,
+        "improvement_pct": 160.8,
+        "improvement_absolute": 9.239,
+        "decomposition": {
+          "manpower_reduction_pct": 163.3,
+          "barricade_reduction_pct": 4.0,
+          "diversion_reduction_pct": 0.0
+        },
+        "confidence": {
+          "score": 0.814,
+          "label": "HIGH"
+        },
+        "queueing_model": "lightweight_mmc_proxy"
+      },
+      "rationale": [
+        "MoE regime=short: P50=1.4h (band 1.0\u20132.2h), impact=3.4.",
+        "Active overlap within 2km: 0 concurrent event(s).",
+        "Manpower (pulp): assign 14 officers (need 3, coverage 467%).",
+        "Barricade plan: MINIMAL at 3 point(s).",
+        "Diversion: 2 route(s); best savings ~0.0 min.",
+        "What-if: 160.8% delay reduction expected (confidence HIGH)."
+      ],
+      "inputs_summary": {
+        "regime": "short",
+        "p35_hours": 1.0,
+        "p50_hours": 1.4,
+        "p65_hours": 2.2,
+        "impact_score": 3.4,
+        "active_overlap": 0,
+        "corridor": "Mekhri Circle",
+        "zone": "North"
+      },
+      "confidence": {
+        "score": 0.814,
+        "label": "HIGH"
+      }
+    }
+  }
+]

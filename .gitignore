@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+frontend/dist/
+.env
+frontend/.env
+terminals/
+agent-tools/
+catboost_info/
+*.pkl
+*.parquet
+data/mappls_cache/
+.DS_Store

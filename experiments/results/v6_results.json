@@ -1,0 +1,37 @@
+{
+  "best_method": "V4 baseline (champion)",
+  "best_mae": 1.4221,
+  "all_results": {
+    "V4 baseline (champion)": 1.4221,
+    "Stacked Quantile \u03b1=0.3\u21920.7": 1.4452,
+    "DART + Optuna 50": 1.5927,
+    "Log-space LGB + Optuna 50": 1.6805,
+    "V4 + Temporal Residual Correction": 1.8015,
+    "DART booster (default)": 1.8103,
+    "Log-space LGB (default)": 1.8514,
+    "LGB+Neural Ensemble": 2.0419,
+    "Neural Entity Embedding Net": 3.3664
+  },
+  "log_tuned_params": {
+    "n": 718,
+    "lr": 0.038739327158592234,
+    "leaves": 130,
+    "mcs": 7,
+    "cbt": 0.9375271449444516,
+    "sub": 0.940660382237352,
+    "ra": 0.22161251951413524,
+    "rl": 3.759006324616671e-05
+  },
+  "dart_tuned_params": {
+    "n": 698,
+    "lr": 0.06678174013318351,
+    "leaves": 118,
+    "mcs": 11,
+    "cbt": 0.8222541551251643,
+    "sub": 0.5735412707241675,
+    "drop": 0.12720528394590022,
+    "skip": 0.5631364878132128,
+    "ra": 0.004173213313937393,
+    "rl": 0.005282450900849018
+  }
+}

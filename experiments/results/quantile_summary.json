@@ -1,0 +1,33 @@
+{
+  "avg_coverage": 0.519,
+  "avg_width_hrs": 7.819,
+  "features": [
+    "hour",
+    "dow",
+    "month",
+    "is_weekend",
+    "is_rush",
+    "is_night",
+    "hour_sin",
+    "hour_cos",
+    "is_weather",
+    "requires_road_closure",
+    "event_cause_enc",
+    "zone_enc",
+    "corridor_enc",
+    "police_station_enc",
+    "cause_mean",
+    "cause_median",
+    "cause_p90",
+    "cause_p10",
+    "station_mean",
+    "corridor_mean",
+    "corridor_cnt",
+    "cause_x_rush",
+    "cause_x_night",
+    "cause_x_zone",
+    "cause_x_closure",
+    "station_x_cause"
+  ],
+  "verdict": "NEEDS_TUNING"
+}
