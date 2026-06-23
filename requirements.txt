@@ -18,3 +18,5 @@ networkx>=3.0
 pulp>=2.8
 xgboost>=2.0
 catboost>=1.2
+pyarrow>=10.0
+fastparquet>=2023.1.0
